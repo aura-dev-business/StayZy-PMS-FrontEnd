@@ -1,61 +1,94 @@
 'use client';
-import React, { useState } from 'react';
-import { Eye, EyeOff } from 'lucide-react';
+
+import React, { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { toast } from 'sonner';
 
 const LoginForm: React.FC = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [loginData, setLoginData] = useState({
-    username: '',
-    password: '',
-  });
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setLoginData(prev => ({ ...prev, [name]: value }));
-  };
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = () => {
-    console.log('Login Attempt:', loginData);
-    // TODO: connect to backend API
+  // ✅ Show toast if redirected after successful registration
+  useEffect(() => {
+    if (searchParams.get('registered') === '1') {
+      toast.success('Registration successful! Please log in.');
+    }
+  }, [searchParams]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage('');
+
+    try {
+      const response = await fetch('http://localhost:8081/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // ✅ Cookie is automatically sent/received
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+  toast.success('Login successful!');
+  setTimeout(() => {
+    router.push('/dashboard');
+  }, 200); // 🕒 Small delay helps cookies settle
+      }
+       else {
+        // ✅ Safe JSON parsing with fallback
+        let msg = 'Invalid credentials';
+        try {
+          const errorData = await response.json();
+          msg = errorData.message || msg;
+        } catch (err) {
+          console.warn('Failed to parse error JSON');
+        }
+
+        setErrorMessage(msg);
+        toast.error(msg);
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setErrorMessage('Something went wrong. Please try again.');
+      toast.error('Something went wrong. Please try again.');
+    }
   };
 
   return (
-    <div className="space-y-6">
-      {/* Username */}
-      <input
-        name="username"
-        type="text"
-        value={loginData.username}
-        onChange={handleChange}
-        placeholder="Username"
-        className="w-full px-4 py-3 border border-gray-300 rounded-lg"
-      />
-
-      {/* Password */}
-      <div className="relative">
+    <div className="max-w-md mx-auto mt-10 p-6 border rounded shadow">
+      <h2 className="text-2xl font-semibold mb-4">Login</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
         <input
-          name="password"
-          type={showPassword ? 'text' : 'password'}
-          value={loginData.password}
-          onChange={handleChange}
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          className="w-full p-2 border rounded"
+        />
+        <input
+          type="password"
           placeholder="Password"
-          className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          className="w-full p-2 border rounded"
         />
         <button
-          type="button"
-          onClick={() => setShowPassword(prev => !prev)}
-          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+          type="submit"
+          className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
         >
-          {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+          Login
         </button>
-      </div>
-
-      <button
-        onClick={handleSubmit}
-        className="w-full bg-teal-600 text-white py-3 rounded-lg hover:bg-teal-700"
-      >
-        Log In
-      </button>
+        {errorMessage && (
+          <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
+        )}
+      </form>
     </div>
   );
 };

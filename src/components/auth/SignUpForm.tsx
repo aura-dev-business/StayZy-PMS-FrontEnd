@@ -1,16 +1,21 @@
 'use client';
+
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation'; // ✅ Import for routing
 
 const SignupForm: React.FC = () => {
+  const router = useRouter(); // ✅ Initialize router
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [signupData, setSignupData] = useState({
     fullName: '',
-    email: '',
     username: '',
+    email: '',
     password: '',
     confirmPassword: '',
+    phone: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,13 +23,49 @@ const SignupForm: React.FC = () => {
     setSignupData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = () => {
-    if (signupData.password !== signupData.confirmPassword) {
-      alert('Passwords do not match!');
+  const handleSubmit = async () => {
+    const { fullName, username, email, password, confirmPassword, phone } = signupData;
+
+    if (password !== confirmPassword) {
+      toast.error('Passwords do not match!');
       return;
     }
-    console.log('Signup Attempt:', signupData);
-    // TODO: connect to backend API
+
+    if (!/^\d{10}$/.test(phone)) {
+      toast.error('Phone number must be exactly 10 digits');
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:8081/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ fullName, username, email, password, phone }),
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        toast.error(`Registration failed: ${text}`);
+        return;
+      }
+
+      toast.success("✅ Registration successful!");
+      setSignupData({
+        fullName: '',
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        phone: '',
+      });
+
+      router.push('/login'); // ✅ Redirect after success
+    } catch (error) {
+      console.error("Registration error:", error);
+      toast.error("Something went wrong.");
+    }
   };
 
   return (
@@ -37,14 +78,7 @@ const SignupForm: React.FC = () => {
         placeholder="Full Name"
         className="w-full px-4 py-3 border border-gray-300 rounded-lg"
       />
-      <input
-        name="email"
-        type="email"
-        value={signupData.email}
-        onChange={handleChange}
-        placeholder="Email"
-        className="w-full px-4 py-3 border border-gray-300 rounded-lg"
-      />
+
       <input
         name="username"
         type="text"
@@ -53,6 +87,25 @@ const SignupForm: React.FC = () => {
         placeholder="Username"
         className="w-full px-4 py-3 border border-gray-300 rounded-lg"
       />
+
+      <input
+        name="email"
+        type="email"
+        value={signupData.email}
+        onChange={handleChange}
+        placeholder="Email"
+        className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+      />
+
+      <input
+        name="phone"
+        type="tel"
+        value={signupData.phone}
+        onChange={handleChange}
+        placeholder="Phone Number"
+        className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+      />
+
       <div className="relative">
         <input
           name="password"
@@ -70,6 +123,7 @@ const SignupForm: React.FC = () => {
           {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
         </button>
       </div>
+
       <div className="relative">
         <input
           name="confirmPassword"

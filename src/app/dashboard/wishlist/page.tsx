@@ -1,9 +1,8 @@
 'use client'
-
 const page = () => {
   return (
     <div>
-      <h1>Contact</h1>
+      <h1>Athil</h1>
     </div>
   )
 }

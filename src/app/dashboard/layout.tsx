@@ -4,10 +4,24 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/dashboard/Sidebar';
 import { toast } from 'sonner';
+import Image from 'next/image';
+import LoggedInNavbar from '@/components/NavbarUser';
+
+interface User {
+  id: string;
+  fullName: string;
+  name: string;
+  email: string;
+  avatar?: string;
+  role?: string;
+}
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
 
   // ✅ Check if user is authenticated using cookie
   useEffect(() => {
@@ -19,6 +33,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         });
 
         if (res.ok) {
+          const userData = await res.json();
+          setUser(userData);
           setLoading(false); // Authenticated
         } else {
           throw new Error('Unauthorized');
@@ -41,7 +57,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       });
 
       if (res.ok) {
-        toast.success('Logged out');
+        toast.success('Logged out successfully');
         router.replace('/login'); // 🔁 Use replace to prevent back nav
       } else {
         toast.error('Logout failed');
@@ -51,25 +67,86 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     }
   };
 
-  if (loading) return <div className="p-10">Loading...</div>;
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (!target.closest('.profile-dropdown') && !target.closest('.profile-button')) {
+        setProfileDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
+
+  // Get user initials for avatar fallback
+  const getUserInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(word => word[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
+  // Loading screen with beautiful animation
+  if (loading) {
+    return (
+      <>
+        {user && <LoggedInNavbar user={user} onLogout={handleLogout} />}
+        <div className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-blue-50 flex items-center justify-center">
+          <div className="text-center">
+            <div className="relative">
+              <div className="w-16 h-16 border-4 border-teal-200 rounded-full animate-spin"></div>
+              <div className="absolute top-0 left-0 w-16 h-16 border-4 border-transparent border-t-teal-600 rounded-full animate-spin"></div>
+            </div>
+            <p className="mt-4 text-gray-600 font-medium">Loading your dashboard...</p>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* 🔝 Top Navbar */}
-      <nav className="bg-blue-600 text-white p-4 flex justify-between items-center">
-        <span className="font-bold text-lg">StayZy Dashboard</span>
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 px-3 py-1 rounded hover:bg-red-600 transition"
-        >
-          Logout
-        </button>
-      </nav>
+    <div className="flex flex-col min-h-screen bg-gray-50 pt-16">
+      <LoggedInNavbar user={{ 
+        ...user,
+        id: user?.id ?? '',
+        name: (user as any).fullName ?? user?.name ?? '', 
+        email: user?.email ?? '', 
+        avatar: user?.avatar, 
+        role: user?.role,
+        fullName: (user as any).fullName ?? user?.name ?? '' // Ensure fullName is always a string
+      }} onLogout={handleLogout} />
+      
 
       {/* 🧭 Sidebar + Main Content */}
-      <div className="flex flex-1">
-        <Sidebar />
-        <main className="flex-1 p-6 bg-gray-50">{children}</main>
+      <div className="flex flex-1 relative">
+        {/* Mobile Sidebar Overlay */}
+        {sidebarOpen && (
+          <div 
+            className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-30"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+
+        {/* Sidebar */}
+        <div className={`lg:block ${sidebarOpen ? 'block' : 'hidden'} lg:relative absolute inset-y-0 left-0 z-40 transform transition-transform duration-300 ease-in-out`}>
+          <Sidebar />
+        </div>
+
+        {/* Main Content Area */}
+        <main className="flex-1 overflow-auto">
+          <div className="min-h-full bg-gradient-to-br from-gray-50 to-white">
+            <div className="p-6 lg:p-8">
+              {/* Content Container with beautiful styling */}
+              <div className="max-w-7xl mx-auto">
+                {children}
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
     </div>
   );

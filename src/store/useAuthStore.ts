@@ -19,12 +19,16 @@ interface AuthStore {
   setUser: (user: User | null) => void;
 }
 
-export const useAuthStore = create<AuthStore>((set) => ({
+export const useAuthStore = create<AuthStore>((set, get) => ({
   user: null,
   loading: true,
   error: null,
 
   fetchUser: async () => {
+    const { user, loading } = get();
+
+    // ✅ Skip fetching if user already exists or still loading from previous call
+    if (user || loading) return;
     try {
       set({ loading: true, error: null });
 
@@ -41,7 +45,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
         return;
       }
 
-      const data = await res.json();
+      const data: User = await res.json();
       set({ user: data });
     } catch (err) {
       console.error('Auth fetch error:', err);
@@ -67,3 +71,4 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
   setUser: (user) => set({ user }),
 }));
+

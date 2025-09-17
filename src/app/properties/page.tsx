@@ -15,14 +15,21 @@ import {
   SlidersHorizontal,
   ChevronDown,
 } from 'lucide-react';
-import { usePropertyStore } from '@/store/propertyStore'; // Adjust the path as needed
+import { usePropertyStore } from '@/store/propertyStore';
+
+interface PropertyImage {
+  id: string;
+  imageUrl: string;
+  isPrimary: boolean;
+  sortOrder: number | null;
+}
 
 interface Property {
   id: string;
   title: string;
   city: string;
   pricePerMonth: number;
-  images?: string[];
+  images?: PropertyImage[] | string[];
   image?: string;
   imageUrl?: string;
   bhkType?: string;
@@ -35,6 +42,10 @@ type SortOption = {
   sortFn: (a: Property, b: Property) => number;
 };
 
+// Data URL fallback for images (base64 encoded SVG)
+const FALLBACK_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjY2NjY2NjIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzk2OTY5NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pgo8L3N2Zz4=';
+// Data URL fallback for images (base64 encoded SVG)
+const FALLBACK_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjY2NjY2NjIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzk2OTY5NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pgo8L3N2Zz4=';
 const checkLogin = async (): Promise<boolean> => {
   try {
     const res = await fetch('http://localhost:8081/api/auth/me', {
@@ -80,7 +91,6 @@ const PropertySearchHeader = ({
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
   const [filtersExpanded, setFiltersExpanded] = useState(false);
 
-  // Get state and actions from the store
   const {
     selectedLocation,
     setSelectedLocation,
@@ -117,7 +127,6 @@ const PropertySearchHeader = ({
 
   return (
     <div className="bg-white shadow-sm">
-      {/* Breadcrumb Navigation */}
       <div className="px-4 sm:px-6 py-3 border-b border-gray-200">
         <nav className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm text-gray-600 overflow-x-auto">
           <span
@@ -144,11 +153,10 @@ const PropertySearchHeader = ({
         </nav>
       </div>
 
-      {/* Search and Filter Controls */}
       <div className="px-4 sm:px-6 py-4">
-        {/* Mobile: Stack vertically, Desktop: Horizontal layout */}
         <div className="space-y-4 lg:space-y-0">
-          {/* Top row: Search bar (full width on mobile) */}
+      <div className="px-4 sm:px-6 py-4">
+        <div className="space-y-4 lg:space-y-0">
           <div className="w-full lg:hidden">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -162,9 +170,7 @@ const PropertySearchHeader = ({
             </div>
           </div>
 
-          {/* Desktop: Single row layout */}
           <div className="hidden lg:flex lg:items-center lg:space-x-4">
-            {/* CITY DROPDOWN */}
             <div className="relative flex-shrink-0">
               <select
                 value={selectedLocation}
@@ -179,8 +185,6 @@ const PropertySearchHeader = ({
                 ))}
               </select>
             </div>
-
-            {/* SEARCH BAR */}
             <div className="flex-1 relative min-w-0">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
@@ -192,7 +196,6 @@ const PropertySearchHeader = ({
               />
             </div>
 
-            {/* PROPERTY TYPE DROPDOWN */}
             <div className="relative flex-shrink-0">
               <select
                 value={propertyType}
@@ -207,8 +210,6 @@ const PropertySearchHeader = ({
                 ))}
               </select>
             </div>
-
-            {/* BHK TYPE DROPDOWN */}
             <div className="relative flex-shrink-0">
               <select
                 value={bhkType}
@@ -223,8 +224,6 @@ const PropertySearchHeader = ({
                 ))}
               </select>
             </div>
-
-            {/* TENANT TYPE DROPDOWN */}
             <div className="relative flex-shrink-0">
               <select
                 value={tenantType}
@@ -239,8 +238,6 @@ const PropertySearchHeader = ({
                 ))}
               </select>
             </div>
-
-            {/* CUSTOM SORT DROPDOWN */}
             <div className="relative flex-shrink-0">
               <button
                 onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
@@ -275,7 +272,6 @@ const PropertySearchHeader = ({
             </button>
           </div>
 
-          {/* Mobile: Collapsible filters */}
           <div className="lg:hidden">
             <button
               onClick={() => setFiltersExpanded(!filtersExpanded)}
@@ -287,9 +283,7 @@ const PropertySearchHeader = ({
 
             {filtersExpanded && (
               <div className="space-y-3 animate-in slide-in-from-top-2 duration-200">
-                {/* Mobile filters row 1 */}
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {/* CITY DROPDOWN */}
                   <div className="relative">
                     <select
                       value={selectedLocation}
@@ -304,8 +298,6 @@ const PropertySearchHeader = ({
                       ))}
                     </select>
                   </div>
-
-                  {/* PROPERTY TYPE DROPDOWN */}
                   <div className="relative">
                     <select
                       value={propertyType}
@@ -320,8 +312,6 @@ const PropertySearchHeader = ({
                       ))}
                     </select>
                   </div>
-
-                  {/* BHK TYPE DROPDOWN */}
                   <div className="relative">
                     <select
                       value={bhkType}
@@ -336,8 +326,6 @@ const PropertySearchHeader = ({
                       ))}
                     </select>
                   </div>
-
-                  {/* TENANT TYPE DROPDOWN */}
                   <div className="relative">
                     <select
                       value={tenantType}
@@ -352,8 +340,6 @@ const PropertySearchHeader = ({
                       ))}
                     </select>
                   </div>
-
-                  {/* SORT DROPDOWN */}
                   <div className="relative col-span-2 sm:col-span-1">
                     <button
                       onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
@@ -383,7 +369,6 @@ const PropertySearchHeader = ({
                   </div>
                 </div>
 
-                {/* Additional filters button */}
                 <button className="flex items-center justify-center space-x-2 w-full px-4 py-2.5 border border-gray-300 rounded-lg hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
                   <SlidersHorizontal className="w-4 h-4 text-gray-500" />
                   <span className="text-gray-700 text-sm">More Filters</span>
@@ -400,7 +385,6 @@ const PropertySearchHeader = ({
 const Page = () => {
   const router = useRouter();
   
-  // Get all needed state and actions from the store
   const {
     properties,
     cities,
@@ -424,12 +408,11 @@ const Page = () => {
     fetchProperties
   } = usePropertyStore();
 
-  // Sort options configuration
   const sortOptions: SortOption[] = [
     {
       value: 'Sort',
       label: 'Sort',
-      sortFn: () => 0, // No sorting, keep original order
+      sortFn: () => 0,
     },
     {
       value: 'price-low-high',
@@ -463,20 +446,51 @@ const Page = () => {
     },
   ];
 
-  // Fetch properties on mount
   useEffect(() => {
     fetchProperties();
   }, [fetchProperties]);
 
   const getPropertyImages = (p: Property): string[] => {
-    if (p.images?.length) return p.images;
-    if (p.image) return [p.image];
-    if (p.imageUrl) return [p.imageUrl];
-    return ['https://via.placeholder.com/600x400?text=No+Image'];
+    try {
+      if (p.images && Array.isArray(p.images) && p.images.length > 0) {
+        let imageUrls: string[] = [];
+        
+        if (typeof p.images[0] === 'object' && (p.images[0] as any).imageUrl) {
+          imageUrls = (p.images as any[]).map(img => img.imageUrl);
+        } 
+        else if (typeof p.images[0] === 'string') {
+          imageUrls = p.images as string[];
+        }
+        
+        const validUrls = imageUrls.filter(url => 
+          url && 
+          typeof url === 'string' && 
+          url.trim() !== '' &&
+          (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('/') || url.startsWith('data:'))
+        );
+        
+        if (validUrls.length > 0) {
+          return validUrls;
+        }
+      }
+      
+      if (p.image && typeof p.image === 'string' && p.image.trim() !== '' && 
+          (p.image.startsWith('http://') || p.image.startsWith('https://') || p.image.startsWith('/') || p.image.startsWith('data:'))) {
+        return [p.image];
+      }
+      
+      if (p.imageUrl && typeof p.imageUrl === 'string' && p.imageUrl.trim() !== '' &&
+          (p.imageUrl.startsWith('http://') || p.imageUrl.startsWith('https://') || p.imageUrl.startsWith('/') || p.imageUrl.startsWith('data:'))) {
+        return [p.imageUrl];
+      }
+      
+    } catch (error) {
+      console.error('Error processing property images:', error);
+    }
+    
+    return [FALLBACK_IMAGE];
   };
-
   const filteredAndSortedProperties = (() => {
-    // First filter the properties
     const filtered = properties.filter((p) => {
       const matchesSearch =
         p.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -500,7 +514,6 @@ const Page = () => {
       return matchesSearch && matchesType && matchesCity && matchesBhkType && matchesTenantType;
     });
 
-    // Then sort the filtered properties
     const currentSortOption = sortOptions.find(option => option.value === sortBy);
     if (currentSortOption && sortBy !== 'default') {
       return [...filtered].sort(currentSortOption.sortFn);
@@ -548,7 +561,6 @@ const Page = () => {
         <PropertySearchHeader sortOptions={sortOptions} />
 
         <div className="max-w-7xl pt-6 sm:pt-10 mx-auto">
-          {/* Results summary */}
           {!loading && (
             <div className="mb-6 px-4 sm:px-0">
               <p className="text-sm sm:text-base text-gray-600">
@@ -563,7 +575,6 @@ const Page = () => {
           )}
 
           {loading ? (
-            // Skeleton loader
             <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 px-4 sm:px-0">
               {Array.from({ length: 6 }).map((_, index) => (
                 <PropertySkeleton key={index} />
@@ -597,13 +608,21 @@ const Page = () => {
                     >
                       <img
                         src={cur}
-                        alt={`${p.title} image ${idx + 1}`}
+                        alt={p.title}
                         className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 group-hover:scale-110 ${
                           trans ? 'opacity-0 scale-95' : 'opacity-100'
                         }`}
                         onError={(e) => {
-                          e.currentTarget.src =
-                            'https://via.placeholder.com/600x400?text=Image+Not+Found';
+                          const target = e.target as HTMLImageElement;
+                          // Use data URL fallback for any HTTP errors including SSL issues
+                          target.src = FALLBACK_IMAGE;
+                        }}
+                        onLoad={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          // Additional check for images that might load but are broken
+                          if (target.naturalWidth === 0 || target.naturalHeight === 0) {
+                            target.src = FALLBACK_IMAGE;
+                          }
                         }}
                       />
 

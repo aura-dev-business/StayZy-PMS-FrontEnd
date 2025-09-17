@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
@@ -12,16 +12,11 @@ export default function Sidebar() {
   const logout = async () => {
     setIsLoggingOut(true);
     try {
-      // Call backend to invalidate the cookie/session (if any)
       await fetch('http://localhost:8081/api/auth/logout', {
         method: 'POST',
         credentials: 'include',
       });
-
-      // Remove token from localStorage if used
       localStorage.removeItem('token');
-
-      // Redirect to login
       router.push('/login');
     } catch (error) {
       console.error('Logout failed', error);
@@ -48,15 +43,6 @@ export default function Sidebar() {
       <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-purple-400/20 to-pink-600/20 rounded-full blur-2xl"></div>
       
       <div className="relative z-10 p-6">
-        {/* Logo/Brand Section */}
-        <div className="mb-10">
-          <div className="flex items-center space-x-3 mb-2">
-           
-           
-          </div>
-
-        </div>
-
         {/* Navigation Menu */}
         <nav className="space-y-3">
           {menuItems.map((item) => (

@@ -44,7 +44,8 @@ type SortOption = {
 
 // Data URL fallback for images (base64 encoded SVG)
 const FALLBACK_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjY2NjY2NjIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzk2OTY5NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pgo8L3N2Zz4=';
-
+// Data URL fallback for images (base64 encoded SVG)
+const FALLBACK_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjY2NjY2NjIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzk2OTY5NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pgo8L3N2Zz4=';
 const checkLogin = async (): Promise<boolean> => {
   try {
     const res = await fetch('http://localhost:8081/api/auth/me', {
@@ -154,6 +155,8 @@ const PropertySearchHeader = ({
 
       <div className="px-4 sm:px-6 py-4">
         <div className="space-y-4 lg:space-y-0">
+      <div className="px-4 sm:px-6 py-4">
+        <div className="space-y-4 lg:space-y-0">
           <div className="w-full lg:hidden">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -182,7 +185,6 @@ const PropertySearchHeader = ({
                 ))}
               </select>
             </div>
-
             <div className="flex-1 relative min-w-0">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
@@ -208,7 +210,6 @@ const PropertySearchHeader = ({
                 ))}
               </select>
             </div>
-
             <div className="relative flex-shrink-0">
               <select
                 value={bhkType}
@@ -223,7 +224,6 @@ const PropertySearchHeader = ({
                 ))}
               </select>
             </div>
-
             <div className="relative flex-shrink-0">
               <select
                 value={tenantType}
@@ -238,7 +238,6 @@ const PropertySearchHeader = ({
                 ))}
               </select>
             </div>
-
             <div className="relative flex-shrink-0">
               <button
                 onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
@@ -299,7 +298,6 @@ const PropertySearchHeader = ({
                       ))}
                     </select>
                   </div>
-
                   <div className="relative">
                     <select
                       value={propertyType}
@@ -314,7 +312,6 @@ const PropertySearchHeader = ({
                       ))}
                     </select>
                   </div>
-
                   <div className="relative">
                     <select
                       value={bhkType}
@@ -329,7 +326,6 @@ const PropertySearchHeader = ({
                       ))}
                     </select>
                   </div>
-
                   <div className="relative">
                     <select
                       value={tenantType}
@@ -344,7 +340,6 @@ const PropertySearchHeader = ({
                       ))}
                     </select>
                   </div>
-
                   <div className="relative col-span-2 sm:col-span-1">
                     <button
                       onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
@@ -495,7 +490,6 @@ const Page = () => {
     
     return [FALLBACK_IMAGE];
   };
-
   const filteredAndSortedProperties = (() => {
     const filtered = properties.filter((p) => {
       const matchesSearch =

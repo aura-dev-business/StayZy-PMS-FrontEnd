@@ -29,7 +29,6 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
     // ✅ Skip fetching if user already exists or still loading from previous call
     if (user || loading) return;
-
     try {
       set({ loading: true, error: null });
 
@@ -72,4 +71,4 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
   setUser: (user) => set({ user }),
 }));
-  
+

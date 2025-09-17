@@ -15,7 +15,7 @@ export default function OurStory() {
               alt="Modern luxury real estate development"
               width={600}
               height={600}
-              className="w-full h-auto md: lg: object-cover transition-transform duration-700 group-hover:scale-105"
+              className="w-full h-[400px] md:h-[500px] lg:h-[600px] object-cover transition-transform duration-700 group-hover:scale-105"
             />
             
             {/* Gradient overlay for better text visibility */}
@@ -44,13 +44,13 @@ export default function OurStory() {
         <div className=" order-1 lg:order-2">
           {/* Header with improved typography */}
           <div className="">
-            <div className="inline-flex items-center  text-red-500 text-md font-semibold tracking-wider uppercase">
-              <div className=" bg-red-500 text-3xl"></div>
-              <span style={{fontFamily : 'Nulshock RG'}} className="text-3xl">Our Story</span>
+            <div className="inline-flex items-center gap-2 text-red-500 text-sm font-semibold tracking-wider uppercase">
+              <div className="w-8 h-0.5 bg-red-500"></div>
+              Our Story
             </div>
-            <h2 style={{fontFamily : 'Nulshock RG'}} className="opacity-40 text-3xl md:text-4xl lg:text-4xl font-bold text-black leading-tight">
+            <h2 style={{fontFamily : 'Nulshock RG'}} className=" text-3xl md:text-4xl lg:text-4xl font-bold text-white leading-tight">
               Your Trusted Room & 
-              <span className="block text-black opacity-70">Property Partner</span>
+              <span className="block text-red-500">Property Partner</span>
             </h2>
             <p className="text-gray-600 text-lg leading-relaxed">
               StayZy simplifies your property journey - whether you're searching for the perfect room, 

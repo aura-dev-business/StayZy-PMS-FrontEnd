@@ -10,9 +10,7 @@ export default function Home() {
 
   return (
     <div>
-        
-
-      <HeroSection /> 
+      <HeroSection />
       <OurStory />
       <Slider />
       <FeaturedProperties />

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
+import { div } from 'framer-motion/client';
 
 const LoginForm: React.FC = () => {
   const router = useRouter();
@@ -36,7 +37,7 @@ const LoginForm: React.FC = () => {
       if (response.ok) {
   toast.success('Login successful!');
   setTimeout(() => {
-    router.push('/dashboard');
+    router.push('/admin/dashboard');
   }, 200); // 🕒 Small delay helps cookies settle
       }
        else {
@@ -60,7 +61,9 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 border rounded shadow">
+    <div className='pt-[160px]'>
+      <h1 className='text-center text-4xl font-black'>Welcome To Stay-Zy Admin</h1>
+    <div className="max-w-md mx-auto mt-10 p-6 p  border rounded shadow">
       <h2 className="text-2xl font-semibold mb-4">Login</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
@@ -89,6 +92,7 @@ const LoginForm: React.FC = () => {
           <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
         )}
       </form>
+    </div>
     </div>
   );
 };

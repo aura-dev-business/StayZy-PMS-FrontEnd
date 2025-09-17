@@ -1,75 +1,70 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/dashboard/Sidebar';
 import { toast } from 'sonner';
+import LoggedInNavbar from '@/components/NavbarUser';
+import { useAuthStore } from '@/store/useAuthStore';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
+  const { user, loading, logout } = useAuthStore();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
 
-  // ✅ Check if user is authenticated using cookie
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const res = await fetch('http://localhost:8081/api/auth/me', {
-          method: 'GET',
-          credentials: 'include',
-        });
-
-        if (res.ok) {
-          setLoading(false); // Authenticated
-        } else {
-          throw new Error('Unauthorized');
-        }
-      } catch (err) {
-        toast.error('Session expired. Please login again.');
-        router.replace('/login'); // 🔁 Use replace to prevent going back
-      }
-    };
-
-    checkAuth();
-  }, [router]);
-
-  // ✅ Logout: clear JWT cookie from backend
   const handleLogout = async () => {
-    try {
-      const res = await fetch('http://localhost:8081/api/auth/logout', {
-        method: 'POST',
-        credentials: 'include',
-      });
-
-      if (res.ok) {
-        toast.success('Logged out');
-        router.replace('/login'); // 🔁 Use replace to prevent back nav
-      } else {
-        toast.error('Logout failed');
-      }
-    } catch (err) {
-      toast.error('Error while logging out');
-    }
+    await logout();
+    toast.success('Logged out successfully');
+    router.replace('/login');
   };
 
-  if (loading) return <div className="p-10">Loading...</div>;
+  // ✅ No extra fetch here — uses global store state
+  if (loading) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  }
+
+  if (!user) {
+    router.replace('/login');
+    return null;
+  }
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* 🔝 Top Navbar */}
-      <nav className="bg-blue-600 text-white p-4 flex justify-between items-center">
-        <span className="font-bold text-lg">StayZy Dashboard</span>
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 px-3 py-1 rounded hover:bg-red-600 transition"
-        >
-          Logout
-        </button>
-      </nav>
+    <div className="flex flex-col min-h-screen bg-gray-50 pt-16">
+      <LoggedInNavbar
+        user={{
+          ...user,
+          id: user.id ?? '',
+          name: user.fullName ?? user.name ?? '',
+          email: user.email ?? '',
+          avatar: user.avatar,
+          role: user.role,
+          fullName: user.fullName ?? user.name ?? '',
+        }}
+        onLogout={handleLogout}
+      />
 
-      {/* 🧭 Sidebar + Main Content */}
-      <div className="flex flex-1">
-        <Sidebar />
-        <main className="flex-1 p-6 bg-gray-50">{children}</main>
+      <div className="flex flex-1 relative">
+        {sidebarOpen && (
+          <div
+            className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-30"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+
+        <div
+          className={`lg:block ${sidebarOpen ? 'block' : 'hidden'} lg:relative absolute inset-y-0 left-0 z-40 transform transition-transform duration-300 ease-in-out`}
+        >
+          <Sidebar />
+        </div>
+
+        <main className="flex-1 overflow-auto">
+          <div className="min-h-full bg-gradient-to-br from-gray-50 to-white">
+            <div className="p-6 lg:p-8">
+              <div className="max-w-7xl mx-auto">{children}</div>
+            </div>
+          </div>
+        </main>
       </div>
     </div>
   );

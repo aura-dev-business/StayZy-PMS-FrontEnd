@@ -1,102 +1,118 @@
 import Image from "next/image"
-import { Users, Handshake } from "lucide-react"
+import { Users, Handshake, Award, MapPin } from "lucide-react"
+import GsapScrollAnimation from "../common/GsapScrollAnimation"
 
 export default function OurStory() {
   return (
-    <section className="py-16 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
-      <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        {/* Left side - Image with overlay */}
-        <div className="relative">
-          <div className="relative rounded-2xl overflow-hidden">
+    <GsapScrollAnimation>
+    <section className=" py-20 bg-transparent max-w-7xl px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div className="grid lg:grid-cols-2 gap-16 items-start lg:items-center">
+        {/* Left side - Enhanced Image with modern overlay */}
+        <div className="relative group order-2 lg:order-1">
+          <div className="relative rounded-3xl overflow-hidden shadow-2xl">
             <Image
               src="/images/Building.jpg"
-              alt="Modern city skyline with skyscrapers"
-              width={500}
+              alt="Modern luxury real estate development"
+              width={600}
               height={600}
-              className="w-full h-[500px] lg:h-[600px] object-cover"
+              className="w-full h-auto md: lg: object-cover transition-transform duration-700 group-hover:scale-105"
             />
+            
+            {/* Gradient overlay for better text visibility */}
+            <div className="absolute inset-0 via-transparent to-transparent"></div>
 
-            {/* Decorative dots */}
-            <div className="absolute top-8 left-1/2 w-2 h-2 bg-red-500 rounded-full"></div>
-            <div className="absolute top-12 left-1/3 w-4 h-4 border-2 border-red-500 rounded-full"></div>
-
-            {/* Experience overlay */}
-            <div className="absolute bottom-8 right-8 bg-white rounded-lg p-6 shadow-lg">
-              <div className="text-4xl lg:text-5xl font-bold text-red-500 mb-1">
-                30<span className="text-3xl">+</span>
-              </div>
-              <div className="text-gray-600 text-sm">
-                Years of
-                <br />
-                Experience
+            {/* Floating achievement card */}
+            <div className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-sm rounded-2xl p-4 md:p-6 shadow-xl border border-white/20">
+              <div className="flex items-center gap-3">
+                <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
+                  30<span className="text-2xl md:text-3xl">+</span>
+                </div>
+                <div>
+                  <div className="text-gray-800 font-semibold text-xs md:text-sm">Years of Excellence</div>
+                  <div className="text-gray-600 text-xs">Connecting rooms & people</div>
+                </div>
               </div>
             </div>
+
+            {/* Decorative elements */}
+            <div className="absolute top-8 right-8 w-16 h-16 border-2 border-red-500/30 rounded-full animate-pulse"></div>
+            <div className="absolute top-12 right-24 w-2 h-2 bg-red-500 rounded-full animate-bounce"></div>
           </div>
         </div>
 
-        {/* Right side - Content */}
-        <div className="space-y-8">
-          {/* Header */}
-          <div className="space-y-4">
-            <div className="text-red-500 text-sm font-medium tracking-wider">// DISCOVER OUR STORY</div>
-            <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight">
-              Unveiling StayZy Real Estate Journey
+        {/* Right side - Enhanced Content */}
+        <div className=" order-1 lg:order-2">
+          {/* Header with improved typography */}
+          <div className="">
+            <div className="inline-flex items-center  text-red-500 text-md font-semibold tracking-wider uppercase">
+              <div className=" bg-red-500 text-3xl"></div>
+              <span style={{fontFamily : 'Nulshock RG'}} className="text-3xl">Our Story</span>
+            </div>
+            <h2 style={{fontFamily : 'Nulshock RG'}} className="opacity-40 text-3xl md:text-4xl lg:text-4xl font-bold text-black leading-tight">
+              Your Trusted Room & 
+              <span className="block text-black opacity-70">Property Partner</span>
             </h2>
             <p className="text-gray-600 text-lg leading-relaxed">
-              Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et massa mi. Aliquam in hendrerit urna.
-              Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.
+              StayZy simplifies your property journey - whether you're searching for the perfect room, 
+              selling your property, or exploring rental opportunities. We connect you with the right spaces and the right people.
             </p>
           </div>
 
-          {/* Features */}
+          {/* Enhanced Features with better spacing */}
           <div className="space-y-6">
             {/* Client Centric Approach */}
-            <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 w-16 h-16 bg-red-50 rounded-full flex items-center justify-center border-2 border-red-100">
-                <Users className="w-6 h-6 text-red-500" />
+            <div className="group flex items-start gap-4 p-4 rounded-2xl hover:bg-gray-50 transition-all duration-300">
+              <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <MapPin className="w-6 h-6 text-white" />
               </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-6 h-6 bg-gray-900 text-white rounded-full flex items-center justify-center text-xs font-bold">
-                    01
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-900">Client Centric Approach</h3>
-                </div>
-                <p className="text-gray-600">
-                  Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et massa mi. Aliquam in hendrerit urna.
+              <div className="flex-1 min-w-0">
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 group-hover:text-red-600 transition-colors">
+                  Room Finding Made Easy
+                </h3>
+                <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+                  From cozy single rooms to spacious shared apartments, we help you discover the perfect living space 
+                  that fits your budget, location preferences, and lifestyle needs.
                 </p>
               </div>
             </div>
 
             {/* Integrity & Transparency */}
-            <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 w-16 h-16 bg-red-50 rounded-full flex items-center justify-center border-2 border-red-100">
-                <Handshake className="w-6 h-6 text-red-500" />
+            <div className="group flex items-start gap-4 p-4 rounded-2xl hover:bg-gray-50 transition-all duration-300">
+              <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <Users className="w-6 h-6 text-white" />
               </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-6 h-6 bg-gray-900 text-white rounded-full flex items-center justify-center text-xs font-bold">
-                    02
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-900">Integrity & Transparency</h3>
-                </div>
-                <p className="text-gray-600">
-                  Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et massa mi. Aliquam in hendrerit urna.
+              <div className="flex-1 min-w-0">
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 group-hover:text-red-600 transition-colors">
+                  Fast Property Sales
+                </h3>
+                <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+                  Ready to sell? Our expert team handles everything from property valuation to finding serious buyers, 
+                  ensuring you get the best price in the shortest time.
+                </p>
+              </div>
+            </div>
+
+            {/* Market Expertise */}
+            <div className="group flex items-start gap-4 p-4 rounded-2xl hover:bg-gray-50 transition-all duration-300">
+              <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300">
+                <Handshake className="w-6 h-6 text-white" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 group-hover:text-red-600 transition-colors">
+                  24/7 Support & Guidance
+                </h3>
+                <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+                  Our dedicated team is always available to assist you. From initial consultation to final handover, 
+                  we provide continuous support throughout your property journey.
                 </p>
               </div>
             </div>
           </div>
 
-          {/* CTA Button */}
-          <div className="pt-4">
-            <button
-              className="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-full text-base font-medium"
-            >
-              Read More
-            </button>
-          </div>
+         
         </div>
       </div>
     </section>
+    </GsapScrollAnimation>
   )
 }

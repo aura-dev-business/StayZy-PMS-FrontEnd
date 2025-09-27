@@ -33,6 +33,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <div className="flex flex-col min-h-screen bg-gray-50 pt-16">
       <LoggedInNavbar
         user={{
+<<<<<<< Updated upstream
           ...(user as any),
           id: (user as any).id ?? '',
           name: (user as any).fullName ?? (user as any).name ?? '',
@@ -40,6 +41,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           avatar: (user as any).avatar,
           role: (user as any).role,
           fullName: (user as any).fullName ?? (user as any).name ?? '',
+=======
+          ...user,
+          id: user.id ?? '',
+          name: user.fullName ?? user.name ?? '',
+          email: user.email ?? '',
+          avatar: user.avatar,
+          role: user.role,
+          fullName: user.fullName ?? user.name ?? '',
+>>>>>>> Stashed changes
         }}
         onLogout={handleLogout}
       />

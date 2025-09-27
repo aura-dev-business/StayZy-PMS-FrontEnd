@@ -108,4 +108,7 @@ export default function AboutPage() {
     </section>
   );
 }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes

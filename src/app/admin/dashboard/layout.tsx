@@ -2,6 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+<<<<<<< Updated upstream
+=======
+import Sidebar from '@/components/dashboard/Sidebar';
+>>>>>>> Stashed changes
 import { toast } from 'sonner';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -50,6 +54,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     }
   };
 
+<<<<<<< Updated upstream
   if (loading) return <div className="p-10">Loading...</div>;
 
   return (
@@ -68,6 +73,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {/* Main Content */}
       <div className="flex flex-1">
         <main className="flex-1 p-6 bg-gray-50">{children}</main>
+=======
+
+  return (
+    <div className="flex flex-col ">
+     
+
+      {/* 🧭 Sidebar + Main Content */}
+      <div className="flex flex-1">
+        
+        <main className="flex-1 bg-gray-50">{children}</main>
+>>>>>>> Stashed changes
       </div>
     </div>
   );

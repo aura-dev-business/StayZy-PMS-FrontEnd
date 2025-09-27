@@ -14,25 +14,22 @@ interface AuthStore {
   user: User | null;
   loading: boolean;
   error: string | null;
-  fetchUser: () => void;
-  logout: () => void;
+  fetchUser: () => Promise<void>;
+  logout: () => Promise<void>;
   setUser: (user: User | null) => void;
 }
 
 export const useAuthStore = create<AuthStore>((set, get) => ({
   user: null,
-  loading: true,
+  loading: false,
   error: null,
 
   fetchUser: async () => {
     const { user, loading } = get();
 
-    // ✅ Skip fetching if user already exists or still loading from previous call
-    if (user || loading) return;
-<<<<<<< Updated upstream
-=======
+    // Skip fetching if already loading
+    if (loading) return;
 
->>>>>>> Stashed changes
     try {
       set({ loading: true, error: null });
 
@@ -50,7 +47,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       }
 
       const data: User = await res.json();
-      set({ user: data });
+      set({ user: data, error: null });
     } catch (err) {
       console.error('Auth fetch error:', err);
       set({ user: null, error: 'Something went wrong' });
@@ -67,7 +64,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       });
 
       set({ user: null });
-      window.location.href = '/';
+      window.location.href = '/login';
     } catch (err) {
       console.error('Logout error:', err);
     }
@@ -75,8 +72,3 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
   setUser: (user) => set({ user }),
 }));
-<<<<<<< Updated upstream
-
-=======
-  
->>>>>>> Stashed changes

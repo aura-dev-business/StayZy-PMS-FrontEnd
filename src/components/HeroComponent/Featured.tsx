@@ -46,10 +46,23 @@ const FeaturedProperties = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-16 bg-gray-50">
       <div className="text-center mb-12">
+<<<<<<< Updated upstream
         <p style={{ fontFamily : 'Nulshock RG'}} className="text-red-500 text-sm font-medium mb-2 tracking-wider">
           // LATEST PROPERTIES
         </p>
         <h2  style={{ fontFamily : 'Nulshock RG'}} className="text-4xl font-bold text-gray-900 mb-4">
+=======
+        <p
+          style={{ fontFamily: 'Nulshock RG' }}
+          className="text-red-500 text-sm font-medium mb-2 tracking-wider"
+        >
+          // LATEST PROPERTIES
+        </p>
+        <h2
+          style={{ fontFamily: 'Nulshock RG' }}
+          className="text-4xl font-bold text-gray-900 mb-4"
+        >
+>>>>>>> Stashed changes
           EXPLORE FEATURED
           <br />
           PROPERTIES

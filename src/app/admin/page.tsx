@@ -62,7 +62,11 @@ const LoginForm: React.FC = () => {
 
   return (
     <div className='pt-[160px]'>
+<<<<<<< Updated upstream
       <h1 className='text-center text-4xl font-black'>Welcome To StayZy Admin</h1>
+=======
+      <h1 className='text-center text-4xl font-black'>Welcome To Stay-Zy Admin</h1>
+>>>>>>> Stashed changes
     <div className="max-w-md mx-auto mt-10 p-6 p  border rounded shadow">
       <h2 className="text-2xl font-semibold mb-4">Login</h2>
       <form onSubmit={handleSubmit} className="space-y-4">

@@ -1,9 +1,11 @@
+import tailwindcss from '@tailwindcss/postcss';
+import autoprefixer from 'autoprefixer';
+
 const config = {
-  plugins: ["@tailwindcss/postcss"],
-  fontFamily: {
-        Satoshi: ["'Satoshi-Regular'", "sans-serif"],
-        nulshock: ['"Nulshock RG"', 'sans-serif'],
-      },
+  plugins: {
+    [tailwindcss]: {},
+    [autoprefixer]: {},
+  },
 };
 
 export default config;

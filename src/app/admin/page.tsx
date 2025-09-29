@@ -35,12 +35,11 @@ const LoginForm: React.FC = () => {
       });
 
       if (response.ok) {
-  toast.success('Login successful!');
-  setTimeout(() => {
-    router.push('/admin/dashboard');
-  }, 200); // 🕒 Small delay helps cookies settle
-      }
-       else {
+        toast.success('Login successful!');
+        setTimeout(() => {
+          router.push('/admin/dashboard');
+        }, 200); // 🕒 Small delay helps cookies settle
+      } else {
         // ✅ Safe JSON parsing with fallback
         let msg = 'Invalid credentials';
         try {
@@ -63,36 +62,36 @@ const LoginForm: React.FC = () => {
   return (
     <div className='pt-[160px]'>
       <h1 className='text-center text-4xl font-black'>Welcome To StayZy Admin</h1>
-    <div className="max-w-md mx-auto mt-10 p-6 p  border rounded shadow">
-      <h2 className="text-2xl font-semibold mb-4">Login</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="w-full p-2 border rounded"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="w-full p-2 border rounded"
-        />
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
-        >
-          Login
-        </button>
-        {errorMessage && (
-          <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
-        )}
-      </form>
-    </div>
+      <div className="max-w-md mx-auto mt-10 p-6 p  border rounded shadow">
+        <h2 className="text-2xl font-semibold mb-4">Login</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full p-2 border rounded"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="w-full p-2 border rounded"
+          />
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+          >
+            Login
+          </button>
+          {errorMessage && (
+            <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
+          )}
+        </form>
+      </div>
     </div>
   );
 };

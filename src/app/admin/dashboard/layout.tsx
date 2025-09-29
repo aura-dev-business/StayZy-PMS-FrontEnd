@@ -25,7 +25,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         }
       } catch (err) {
         toast.error('Session expired. Please login again.');
-        router.replace('/login'); // 🔁 Use replace to prevent going back
+        router.replace('/login');
       }
     };
 
@@ -42,7 +42,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       if (res.ok) {
         toast.success('Logged out');
-        router.replace('/login'); // 🔁 Use replace to prevent back nav
+        router.replace('/login');
       } else {
         toast.error('Logout failed');
       }

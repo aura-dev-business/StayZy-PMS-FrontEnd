@@ -2,22 +2,23 @@
 
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "@/app/styles/fonts.css";
 import { Toaster } from 'sonner';
 import MouseTracker from "@/components/MouseTracker";
 import NavbarWrapper from "@/components/NavbarWrapper";
 import { useEffect } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
-import '@/app/styles/fonts.css'; 
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

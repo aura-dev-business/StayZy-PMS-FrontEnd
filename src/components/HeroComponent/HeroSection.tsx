@@ -101,6 +101,10 @@ export default function HeroSection() {
                   src={property1} 
                   alt="Modern bedroom interior"
                   className="w-full h-full object-cover"
+                  sizes="(max-width: 768px) 100vw,
+                         (max-width: 1200px) 50vw,
+                         33vw"
+                  priority
                 />
               </div>
             </div>
@@ -113,31 +117,6 @@ export default function HeroSection() {
               <ChevronRight className="w-4 h-4 text-gray-600" />
             </button>
           </div>
-
-          {/* Stats - Hidden on mobile, compact on larger screens */}
-          {/* <div className="hidden sm:flex items-center gap-6 lg:gap-8 flex-wrap">
-            <div className="flex items-center gap-3">
-              <div className="flex -space-x-1.5">
-                {[1,2,3,4,5].map((i) => (
-                  <div key={i} className="w-7 h-7 lg:w-8 lg:h-8 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 border-2 border-white shadow-sm"></div>
-                ))}
-              </div>
-              <div>
-                <div className="font-bold text-gray-900 text-sm lg:text-base">72k+ Happy</div>
-                <div className="text-xs lg:text-sm text-gray-600">Customers</div>
-              </div>
-            </div>
-            
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-gradient-to-r from-green-400 to-teal-500 flex items-center justify-center shadow-lg">
-                <Home className="w-5 h-5 lg:w-6 lg:h-6 text-white" />
-              </div>
-              <div>
-                <div className="font-bold text-gray-900 text-sm lg:text-base">200+ New</div>
-                <div className="text-xs lg:text-sm text-gray-600">Listings Everyday!</div>
-              </div>
-            </div>
-          </div> */}
         </div>
 
         {/* Right Side - Search Form */}
@@ -206,14 +185,6 @@ export default function HeroSection() {
                 </select>
                 <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 lg:w-5 lg:h-5 pointer-events-none" />
               </div>
-
-              {/* Advance Search */}
-              {/* <div className="text-right">
-                <button className="text-teal-600 hover:text-teal-700 font-medium text-sm flex items-center justify-end gap-1.5 w-full transition-colors duration-200">
-                  <span className="text-gray-400 text-xs">⚙</span>
-                  Advance Search
-                </button>
-              </div> */}
 
               {/* Search Button */}
               <button

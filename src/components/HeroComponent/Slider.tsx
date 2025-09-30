@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import { Heart, Bed, Bath, Square } from 'lucide-react';
-import Image from 'next/image';
-import prop1 from '/public/images/prop-1.png';
-import prop2 from '/public/images/prop-2.png';
-import prop3 from '/public/images/prop-3.png';
-import prop4 from '/public/images/prop-4.png';
-import prop5 from '/public/images/prop-5.png';
-import prop6 from '/public/images/prop-6.png';
+import Image, { type StaticImageData } from 'next/image';
 
-
-import type { StaticImageData } from 'next/image';
+import prop1 from '@/assets/images/prop-1.png';
+import prop2 from '@/assets/images/prop-2.png';
+import prop3 from '@/assets/images/prop-3.png';
+import prop4 from '@/assets/images/prop-4.png';
+import prop5 from '@/assets/images/prop-5.png';
+import prop6 from '@/assets/images/prop-6.png';
 
 interface Property {
   id: number;
@@ -17,9 +15,9 @@ interface Property {
   price: number;
   location: string;
   bedrooms: number;
-  bathrooms: number; // <-- Make sure every property has this
+  bathrooms: number;
   area: number;
-  image: StaticImageData; // Only allow imported images for Next.js <Image>
+  image: StaticImageData;
   type: 'Sell' | 'Buy';
   tag?: string;
 }
@@ -33,7 +31,7 @@ const properties: Property[] = [
     bedrooms: 2,
     bathrooms: 1,
     area: 85,
-    image: prop1, // <-- fixed
+    image: prop1, // Using imported prop1
     type: "Sell",
     tag: "Sell"
   },
@@ -45,7 +43,7 @@ const properties: Property[] = [
     bedrooms: 3,
     bathrooms: 2,
     area: 110,
-    image: prop2, // <-- fixed
+    image: prop2, // Using imported prop2
     type: "Buy",
     tag: "Buy"
   },
@@ -57,11 +55,11 @@ const properties: Property[] = [
     bedrooms: 4,
     bathrooms: 3,
     area: 140,
-    image: prop3, // <-- fixed
+    image: prop3, // Using imported prop3
     type: "Buy",
     tag: "Buy"
   },
-  {
+   {
     id: 4,
     title: "Mithya Villa",
     price: 200000,
@@ -103,8 +101,8 @@ export default function PropertyListingsSection() {
   const [activeFilter, setActiveFilter] = useState<'All' | 'Sell' | 'Buy'>('All');
   const [favoriteProperties, setFavoriteProperties] = useState<Set<number>>(new Set());
 
-  const filteredProperties = activeFilter === 'All' 
-    ? properties 
+  const filteredProperties = activeFilter === 'All'
+    ? properties
     : properties.filter(property => property.type === activeFilter);
 
   const toggleFavorite = (propertyId: number) => {
@@ -171,15 +169,17 @@ export default function PropertyListingsSection() {
                   src={property.image}
                   alt={property.title}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  placeholder="blur"
                 />
-                
+
                 {/* Property Tag */}
                 {property.tag && (
                   <div className="absolute top-4 left-4">
                     <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      property.tag === 'Sell' 
-                        ? 'bg-blue-100 text-blue-800' 
+                      property.tag === 'Sell'
+                        ? 'bg-blue-100 text-blue-800'
                         : 'bg-green-100 text-green-800'
                     }`}>
                       {property.tag}
@@ -192,7 +192,7 @@ export default function PropertyListingsSection() {
                   onClick={() => toggleFavorite(property.id)}
                   className="absolute top-4 right-4 p-2 bg-white/80 hover:bg-white rounded-full transition-all duration-200 group/heart"
                 >
-                  <Heart 
+                  <Heart
                     className={`w-4 h-4 transition-colors duration-200 ${
                       favoriteProperties.has(property.id)
                         ? 'fill-red-500 text-red-500'
